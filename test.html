@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Alda-Care - Teste de Saúde Mental</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" href="assets/css/theme.css">
+
+    <style>
+        .question-container {
+            background: rgba(255, 255, 255, 0.9); /* Fundo branco semi-transparente para legibilidade */
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            border: 2px solid #27ac6a;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .option:hover {
+            background: #27ac6a;
+            color: white;
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        input[type="radio"]:checked+label {
+            background: #27ac6a;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Estilos do Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 30px;
+            color: #333;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #27ac6a;
+        }
+
+        .modal-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .modal-message {
+            font-size: 20px;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .modal-message a {
+            color: #27ac6a;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        .modal-message a:hover {
+            color: #1f8a53;
+        }
+
+        .btn-calcular {
+            background: #27ac6a;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .btn-calcular:hover {
+            background: #1f8a53;
+        }
+
+        /* Estilo para o fundo fixo na seção main */
+        main {
+            background-image: url('assets/img/bg_image_1.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh; /* Garante que o fundo cubra toda a tela */
+            padding: 40px 0;
+        }
+
+        h1 {
+            color: #fff; /* Cor branca para o título se destacar no fundo */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Sombra para legibilidade */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="topbar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8 text-sm">
+                        <div class="site-info">
+                            <a href="#"><span class="mai-call text-primary"></span>+244 939 111 433</a>
+                            <span class="divider">|</span>
+                            <a href="#"><span class="mai-mail text-primary"></span> aldacare@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 text-right text-sm">
+                        <div class="social-mini-button">
+                            <a href="#"><span class="mai-logo-facebook-f"></span></a>
+                            <a href="#"><span class="mai-logo-twitter"></span></a>
+                            <a href="#"><span class="mai-logo-dribbble"></span></a>
+                            <a href="#"><span class="mai-logo-instagram"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
+            <div class="container">
+                <a class="navbar-brand" href="#"><span class="text-primary">Alda</span>-Care</a>
+                <form action="#">
+                    <div class="input-group input-navbar">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="icon-addon1"><span class="mai-search"></span></span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Pesquisar.." aria-label="Username"
+                            aria-describedby="icon-addon1">
+                    </div>
+                </form>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupport"
+                    aria-controls="navbarSupport" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupport">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="about.html">Serviços</a></li>
+                        <li class="nav-item"><a class="nav-link" href="doctors.html">Profissionais</a></li>
+                        <li class="nav-item"><a class="nav-link" href="blog.html">Centros de Ajuda</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
+                        <li class="nav-item"><a class="btn btn-primary ml-lg-3" href="#">Entrar / Criar conta</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Seção do Questionário -->
+    <main>
+        <center>
+            <h1>Teste de Saúde Mental</h1>
+            <div id="question-list"></div>
+            <button class="btn-calcular" onclick="calcularResultado()">Calcular Resultado</button>
+            <!-- Modal para exibir o resultado -->
+            <div id="resultadoModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" onclick="fecharModal()">×</span>
+                    <div id="modalIcon" class="modal-icon"></div>
+                    <p id="modalMessage" class="modal-message"></p>
+                </div>
+            </div>
+        </center>
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <div class="container">
+            <div class="row px-md-3">
+                <div class="col-sm-6 col-lg-3 py-3">
+                    <h5>Sobre</h5>
+                    <ul class="footer-menu">
+                        <li><a href="#">Quem Somos</a></li>
+                        <li><a href="#">Carreiras</a></li>
+                        <li><a href="#">Equipe Editorial</a></li>
+                        <li><a href="#">Política de Proteção</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6 col-lg-3 py-3">
+                    <h5>Mais Informações</h5>
+                    <ul class="footer-menu">
+                        <li><a href="#">Termos e Condições</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Publicidade</a></li>
+                        <li><a href="#">Seja um Profissional</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6 col-lg-3 py-3">
+                    <h5>Saúde Mental</h5>
+                    <ul class="footer-menu">
+                        <li><a href="#">Encontre um Psicólogo</a></li>
+                        <li><a href="#">Recursos e Apoio</a></li>
+                        <li><a href="#">Dicas de Autoajuda</a></li>
+                        <li><a href="#">Contatos de Emergência</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6 col-lg-3 py-3">
+                    <h5>Contato</h5>
+                    <p class="footer-link mt-2">Bom pastor, Huambo, Angola</p>
+                    <a href="#" class="footer-link">+244 939 111 433</a>
+                    <a href="#" class="footer-link">aldacare@gmail.com</a>
+                    <h5 class="mt-3">Redes Sociais</h5>
+                    <div class="footer-sosmed mt-3">
+                        <a href="#" target="_blank"><span class="mai-logo-facebook-f"></span></a>
+                        <a href="#" target="_blank"><span class="mai-logo-twitter"></span></a>
+                        <a href="#" target="_blank"><span class="mai-logo-instagram"></span></a>
+                        <a href="#" target="_blank"><span class="mai-logo-linkedin"></span></a>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <p id="copyright">Copyright © 2025 <a href="https://macodeid.com/" target="_blank">MACode ID</a>. Todos os
+                direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Lista de perguntas (adicionadas com pontuação implícita nas respostas)
+        const questions = [
+            { text: "Você consegue encontrar satisfação em pequenas atividades diárias?", yes: 0, no: 1 },
+            { text: "Você tem se sentido sem energia para realizar suas atividades?", yes: 1, no: 0 },
+            { text: "Você consegue ter momentos de tranquilidade durante o dia?", yes: 0, no: 1 },
+            { text: "Você tem dificuldade para tomar decisões simples?", yes: 1, no: 0 },
+            { text: "Você consegue sentir prazer nas atividades que costumava gostar?", yes: 0, no: 1 },
+            { text: "Você tem sentido tristeza ou desânimo com frequência?", yes: 1, no: 0 },
+            { text: "Você tem dificuldade para dormir ou dorme demais?", yes: 1, no: 0 },
+            { text: "Você se sente ansioso ou preocupado sem motivo claro?", yes: 1, no: 0 },
+            { text: "Você tem evitado interagir com outras pessoas?", yes: 1, no: 0 },
+            { text: "Você se sente confiante em enfrentar os desafios do dia a dia?", yes: 0, no: 1 },
+            { text: "Você tem notado mudanças no seu apetite (muito ou pouco)?", yes: 1, no: 0 },
+            { text: "Você tem pensamentos negativos que não consegue controlar?", yes: 1, no: 0 },
+            { text: "Você consegue se concentrar nas tarefas que precisa fazer?", yes: 0, no: 1 },
+            { text: "Você tem sentido dores físicas sem explicação médica?", yes: 1, no: 0 },
+            { text: "Você se sente motivado para planejar o futuro?", yes: 0, no: 1 },
+            { text: "Você tem se irritado com facilidade ultimamente?", yes: 1, no: 0 },
+            { text: "Você sente que tem controle sobre sua vida?", yes: 0, no: 1 },
+            { text: "Você tem vontade de chorar sem motivo aparente?", yes: 1, no: 0 },
+            { text: "Você consegue relaxar quando tem um momento livre?", yes: 0, no: 1 },
+            { text: "Você tem sentido seu coração acelerado ou falta de ar?", yes: 1, no: 0 },
+            { text: "Você tem medo de que algo ruim vá acontecer?", yes: 1, no: 0 },
+            { text: "Você se sente apoiado por amigos ou família?", yes: 0, no: 1 },
+            { text: "Você tem evitado responsabilidades ou compromissos?", yes: 1, no: 0 },
+            { text: "Você tem sentido culpa ou baixa autoestima?", yes: 1, no: 0 },
+            { text: "Você consegue rir ou se divertir com algo?", yes: 0, no: 1 },
+            { text: "Você tem dificuldade para se lembrar de coisas simples?", yes: 1, no: 0 },
+            { text: "Você tem sentido que a vida não vale a pena?", yes: 1, no: 0 },
+            { text: "Você tem energia para cuidar da sua higiene pessoal?", yes: 0, no: 1 },
+            { text: "Você tem sentido picos de raiva ou frustração?", yes: 1, no: 0 },
+            { text: "Você acredita que consegue superar momentos difíceis?", yes: 0, no: 1 }
+        ];
+
+        // Função para criar elementos de pergunta
+        function createQuestionElement(question, index) {
+            const questionContainer = document.createElement("div");
+            questionContainer.classList.add("question-container");
+
+            const questionElement = document.createElement("div");
+            questionElement.classList.add("question");
+            questionElement.textContent = `${index + 1}. ${question.text}`;
+
+            const optionsContainer = document.createElement("div");
+            optionsContainer.classList.add("options");
+
+            const optionYes = document.createElement("input");
+            optionYes.type = "radio";
+            optionYes.id = `yes-${index}`;
+            optionYes.name = `question-${index}`;
+            optionYes.value = question.yes;
+
+            const labelYes = document.createElement("label");
+            labelYes.classList.add("option");
+            labelYes.setAttribute("for", optionYes.id);
+            labelYes.textContent = "Sim";
+
+            const optionNo = document.createElement("input");
+            optionNo.type = "radio";
+            optionNo.id = `no-${index}`;
+            optionNo.name = `question-${index}`;
+            optionNo.value = question.no;
+
+            const labelNo = document.createElement("label");
+            labelNo.classList.add("option");
+            labelNo.setAttribute("for", optionNo.id);
+            labelNo.textContent = "Não";
+
+            optionsContainer.appendChild(optionYes);
+            optionsContainer.appendChild(labelYes);
+            optionsContainer.appendChild(optionNo);
+            optionsContainer.appendChild(labelNo);
+
+            questionContainer.appendChild(questionElement);
+            questionContainer.appendChild(optionsContainer);
+
+            return questionContainer;
+        }
+
+        // Adicionar perguntas ao DOM
+        const questionList = document.getElementById("question-list");
+        questions.forEach((question, index) => {
+            questionList.appendChild(createQuestionElement(question, index));
+        });
+
+        // Função para abrir o modal com o resultado
+        function mostrarResultado(icon, message) {
+            const modal = document.getElementById("resultadoModal");
+            const modalIcon = document.getElementById("modalIcon");
+            const modalMessage = document.getElementById("modalMessage");
+
+            modalIcon.innerHTML = icon;
+            modalMessage.innerHTML = message;
+            modal.style.display = "flex";
+        }
+
+        // Função para fechar o modal
+        function fecharModal() {
+            const modal = document.getElementById("resultadoModal");
+            modal.style.display = "none";
+        }
+
+        // Função para calcular e exibir o resultado no modal
+        function calcularResultado() {
+            let pontos = 0;
+            const respostas = document.querySelectorAll('input[type="radio"]:checked');
+
+            if (respostas.length !== questions.length) {
+                mostrarResultado("🚫", "Por favor, responda todas as perguntas antes de calcular o resultado.");
+                return;
+            }
+
+            respostas.forEach(resposta => {
+                pontos += parseInt(resposta.value);
+            });
+
+            let icon = "";
+            let message = "";
+            if (pontos <= 10) {
+                icon = "✅";
+                message = "Sua saúde mental parece estar equilibrada. Continue cuidando de si!";
+            } else if (pontos <= 20) {
+                icon = "⚠️";
+                message = "Você pode estar enfrentando algum estresse ou desconforto leve. Considere técnicas de relaxamento ou apoio.";
+            } else {
+                icon = "🚨";
+                message = `Recomendamos que procure um profissional para uma avaliação mais aprofundada. <a href="doctors.html">Entre em contato com nossos profissionais aqui</a>.`;
+            }
+
+            mostrarResultado(icon, message);
+        }
+
+        // Fechar o modal ao clicar fora dele
+        window.onclick = function (event) {
+            const modal = document.getElementById("resultadoModal");
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        };
+    </script>
+</body>
+
+</html>
